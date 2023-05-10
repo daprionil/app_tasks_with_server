@@ -15,6 +15,10 @@ module.exports = function(database){
         description:{
             type: DataTypes.STRING,
             defaultValue: ''
+        },
+        status:{
+            type: DataTypes.ENUM(['completed','suspended','pending','rejected']),
+            defaultValue: 'pending',
         }
     })
 }
