@@ -2,14 +2,18 @@ import { RiBookletLine } from 'react-icons/ri';
 
 import ToggleSwitch from './ToggleSwitch';
 import { useContext } from 'react';
-import { formContext, updateContext } from '../context/FormProviderContext';
+import { formContext, updateContext, clearContext } from '../context/HomeProviderContext';
 
 function FormTasks() {
+    //* From context form
     const [valuesForm, dispatch] = useContext(formContext);
     
-    const handleChange = ({target:{name, checked, value}}) => {
+    //? Change values of context form
+    const handleChange = ({target:{name, checked, value, type}}) => {
         let data = {};
-        if(name === 'status'){
+
+        //! If the input a checkbox
+        if(type === 'checkbox'){
             data[name] = checked;
         }else{
             data[name] = value;
@@ -17,14 +21,16 @@ function FormTasks() {
         dispatch(updateContext(data));
     };
 
+    //? Validate Form
     const handleSubmit = e => {
-        e.target.preventDefault();
+        e.preventDefault();
 
-        console.log('Validando...');
-    }
+        //!Validate Form with errors
+        dispatch(clearContext());
+    };
 
     return (
-        <form action="" onSubmit={handleSubmit} className="bg-main rounded-3xl flex flex-col gap-3 w-full md:col-span-6 p-4">
+        <form action="" onSubmit={handleSubmit} className="bg-main rounded-3xl flex flex-col gap-3 w-full md:col-span-6 p-4 pb-16 shadow-all">
             <h1 className='text-3xl p-2 mb-2 font-raleway font-bold drop-shadow'>Administrador de Tareas</h1>
             <InputLabelContainer Icon={RiBookletLine}>
                 <input
@@ -48,15 +54,15 @@ function FormTasks() {
                 </textarea>
             </InputLabelContainer>
             <div className='flex gap-3 items-center justify-center max-w-lg w-full'>
-                <span className='border-b-4 font-poppins border-stone-300 font-bold'>Suspendida</span>
+                <span className='border-b-4 font-poppins border-stone-300 font-semibold'>Suspendida</span>
                 <ToggleSwitch
                     name='status'
                     checked={valuesForm.status}
                     functionChange={handleChange}
                 />
-                <span className='border-b-4 font-poppins border-amber-400 font-bold'>Pendiente</span>
+                <span className='border-b-4 font-poppins border-amber-400 font-semibold'>Pendiente</span>
             </div>
-            <div className={`max-w-lg w-full flex items-center ${valuesForm.UserId ? 'justify-around': 'justify-start'}`}>
+            <div className={`max-w-lg w-full flex items-center ${valuesForm.User.name ? 'justify-between md:justify-around': 'justify-start'}`}>
                 <input
                     type="submit"
                     value="Agregar"
@@ -64,12 +70,12 @@ function FormTasks() {
                 />
                 {/* //! Validar existencia de la prop */}
                 {
-                    valuesForm.UserId &&
+                    valuesForm.User.name &&
                     <p
-                        className='font-quicksand font-thin text-xl'>
+                        className='font-quicksand text-center font-thin text-xl'>
                             Tarea asignada a: <span
                                 className='font-poppins text-stone-400 underline'>
-                                {valuesForm.UserId}
+                                {valuesForm.User.name}
                             </span>
                     </p>
                 }

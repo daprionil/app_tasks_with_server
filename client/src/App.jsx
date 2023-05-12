@@ -2,10 +2,11 @@ import { Routes, Route } from "react-router-dom";
 
 import Header from "./components/Header";
 import Home from "./pages/Home";
+import { useEffect } from "react";
 
 function App() {
     return (
-        <div className=" p-4">
+        <div className=" p-4 max-w-[1000px] mx-auto">
             <Header />
             <div className="mt-4">
                 <Routes>

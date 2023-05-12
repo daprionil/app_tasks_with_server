@@ -1,11 +1,13 @@
+import BarUsersHome from '../components/BarUsersHome';
 import FormTasks from '../components/FormTasks';
-import FormProviderContext from '../context/FormProviderContext';
+import HomeProviderContext from '../context/HomeProviderContext';
 function Home() {
     return (
-        <div className="grid grid-cols-1 md:grid-cols-9">
-            <FormProviderContext>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-9 items-start">
+            <HomeProviderContext>
                 <FormTasks />
-            </FormProviderContext>
+                <BarUsersHome />
+            </HomeProviderContext>
         </div>
     );
 }

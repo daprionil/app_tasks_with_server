@@ -6,8 +6,13 @@ import { BrowserRouter } from 'react-router-dom';
 
 import '../public/index.css';
 import store from './redux/store.js';
+import { getUsers } from './redux/createActions.js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+//! Init Functions
+store.dispatch(getUsers());
+
 root.render(
     <React.StrictMode>
         <Provider store={store}>
@@ -16,4 +21,4 @@ root.render(
             </BrowserRouter>
         </Provider>
     </React.StrictMode>,
-)
+);
