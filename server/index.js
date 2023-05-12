@@ -1,6 +1,7 @@
 require('dotenv').config();
 const morgan = require('morgan');
 const express = require('express');
+const cors = require('cors');
 
 const server = require('./src/server.js');
 const { database } = require('./src/db.js');
@@ -13,6 +14,7 @@ const port = process.env.PORT_APP ?? 3001;
 //Middlewares
 server.use(express.json());
 server.use(morgan('dev'));
+server.use(cors());
 
 server.use('/', rootRouter);
 
