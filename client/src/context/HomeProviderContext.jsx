@@ -29,27 +29,23 @@ const formContext = createContext();
 //* Generate useContext to share with components
 
 //* DATA FOR REDUCER CONTEXT FORM
+const initialState = {
+    title:'',
+    description:'',
+    status: false,
+    User: {}
+};
+
 const reducerContext = (state, {type, payload})=>{
     const typeSelect = ({
         UPDATE_VALUES: () => ({
             ...state,
             ...payload
         }),
-        CLEAR_VALUES: () => ({
-            asunto:'',
-            description:'',
-            status: false,
-            User: {}
-        }),
+        CLEAR_VALUES: () => initialState,
     })[type];
 
     return typeSelect ? typeSelect() : state;
-};
-const initialState = {
-    asunto:'',
-    description:'',
-    status: false,
-    User: {}
 };
 
 //* Generate provider context !COMPONENT
