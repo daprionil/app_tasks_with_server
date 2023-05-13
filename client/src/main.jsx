@@ -6,12 +6,13 @@ import { BrowserRouter } from 'react-router-dom';
 
 import '../public/index.css';
 import store from './redux/store.js';
-import { getUsers } from './redux/createActions.js';
+import { getTasks, getUsers } from './redux/createActions.js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 //! Init Functions
 store.dispatch(getUsers());
+store.dispatch(getTasks());
 
 root.render(
     <React.StrictMode>

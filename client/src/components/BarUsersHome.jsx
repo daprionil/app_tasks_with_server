@@ -5,7 +5,9 @@ import UserCardHome from "./UserCardHome";
 
 function BarUsersHome() {
     const [, dispatch] = useContext(formContext);
-    const users = useSelector(({users}) => users);
+    const usersStore = useSelector(({users}) => users);
+
+    const users = [...usersStore.values()];
 
     //! Handle Set Responsability Task
     const setUserAssignTask = ({id,name}) => {
@@ -19,7 +21,7 @@ function BarUsersHome() {
                 users.length ? 
                     users.map( (user,i) => (
                         <UserCardHome
-                            {...user}UserCardHome
+                            {...user}
                             setUserAssignTask={setUserAssignTask}
                             key={i}
                         />

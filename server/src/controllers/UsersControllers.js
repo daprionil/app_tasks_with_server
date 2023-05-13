@@ -34,6 +34,7 @@ const getAllUsers = async (req,res) => {
 const createUser = async (req,res) => {
     try {
         //* Extract values from body to Create USER
+        console.log(req.body);
         const {name} = req.body;
 
         //! Validate data

@@ -1,3 +1,4 @@
+import { ADD_TASK, SET_TASKS,SET_USERS } from "./actionTypes";
 //? If not exist a state, set initialState
 const initialState = {
     tasks:[],
@@ -7,9 +8,22 @@ const initialState = {
 //* Reducer get all actions from dispatch
 const rootReducer = function(state = initialState, {type, payload}){
     const typeFunction = ({
-        SET_USERS: () => ({
+        [`${SET_USERS}`]: () => {
+            const parseUsers = new Map(payload.map(task => {
+                return [task.id, task]
+            }))
+            return {
+                ...state,
+                users: parseUsers
+            }
+        },
+        [`${SET_TASKS}`]:() => ({
             ...state,
-            users: payload
+            tasks: payload.reverse()
+        }),
+        [`${ADD_TASK}`]: () => ({
+            ...state,
+            tasks: [payload,...state.tasks]
         })
     })[type];
     return typeFunction ? typeFunction() : state;

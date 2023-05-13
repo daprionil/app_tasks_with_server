@@ -4,6 +4,7 @@ import ToggleSwitch from './ToggleSwitch';
 import { useContext, useState } from 'react';
 import { formContext, updateContext, clearContext } from '../context/HomeProviderContext';
 import { useDispatch } from 'react-redux';
+import { createTasks } from '../redux/createActions';
 
 function FormTasks() {
     const dispatchRedux = useDispatch();
@@ -50,9 +51,20 @@ function FormTasks() {
 
         //!Validate Form with errors
         if(!errors.length){
-            const parseData = valuesForm;
-            console.log(parseData);
+
+            //* Parse Object to create Tasks
+            const UserId = valuesForm.User.id
+            const parseData = {...valuesForm};
+            delete parseData.User;
             
+            //! Send create task in form
+            dispatchRedux(createTasks({
+                ...parseData,
+                status: parseData.status ? 'suspended' : 'pending',
+                UserId
+            }));
+
+            //* Clear form values in context
             dispatch(clearContext());
         }
         

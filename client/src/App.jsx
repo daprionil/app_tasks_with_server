@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 
 import Header from "./components/Header";
 import Home from "./pages/Home";
-import { useEffect } from "react";
+import TasksPage from "./pages/TasksPage";
 
 function App() {
     return (
@@ -13,7 +13,7 @@ function App() {
                     <Route path="/" element={<Home />}/>
                     
                     {/* //!Tasks */}
-                    <Route path="/tasks" element={<p>Tasks</p>} />
+                    <Route path="/tasks" element={<TasksPage/>} />
                     <Route path="/tasks/:idTask" element={<p>Tarea 1</p>}/>
 
                     {/* //!Users */}

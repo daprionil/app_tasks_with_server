@@ -19,6 +19,6 @@ module.exports = function(database){
         status:{
             type: DataTypes.ENUM(['completed','suspended','pending','rejected']),
             defaultValue: 'pending',
-        }
+        }//UserId foreing key
     })
 }

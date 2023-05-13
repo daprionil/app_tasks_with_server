@@ -47,4 +47,7 @@
     .btn{
         @apply font-raleway border-none outline-none cursor-pointer rounded-lg px-4 py-2
     }
+    .drop-shadow-all{
+        @apply drop-shadow-[1px_0_10px_rgba(0,0,0,0.6)]
+    }
 }

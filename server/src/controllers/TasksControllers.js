@@ -32,7 +32,7 @@ const getATask = async (req, res) => {
 
 const createTask = async (req, res) => {
     try {
-        const {title, description, UserId} = req.body;
+        const {title, description, UserId, status} = req.body;
 
         //! Validate data for new Task
         const tLen = title.trim().length;
@@ -40,14 +40,16 @@ const createTask = async (req, res) => {
 
         if(!validate)throw new Error('Los campos no son válidos');
 
+        
         //* Create task in DataBase
         const task = await Task.create({
-            title, description, UserId: Number(UserId)
+            title, description, UserId: Number(UserId),status
         });
-
+        
         //? Response server
         res.status(200).json({...task.dataValues});
     } catch ({message}) {
+        console.log({message});
         res.status(400).json({error:message});
     };
 };
