@@ -1,23 +1,24 @@
-const { User, Task } = require('../db.js');
+const createUserController = require('../controllers/createUserController.js');
+const deleteUserController = require('../controllers/deleteUserController.js');
+const getAUserController = require('../controllers/getAUserController.js');
+const getAllUsersController = require('../controllers/getAllUsersController.js');
+const getTasksByUser = require('../controllers/getTasksByUser.js');
+const updateUserController = require('../controllers/updateUserController.js');
 
 const getAUser = async (req,res) => {
     try {
         const {name} = req.params;
 
         //! GET user from database
-        const [user] = await User.findAll({
-            where:{
-                name
-            }
-        });
+        const user = await getAUserController(name);
 
         //! Validate SELECT database
-        if(!user.dataValues) throw new Error('El usuario en solicitud no existe');
+        if(!user) throw new Error('El usuario en solicitud no existe');
         
-        const tasks = await Task.findAll({where:{UserId:user.dataValues.id}});
+        const tasks = await getTasksByUser(user.id);
 
         //* Response with find user
-        res.status(200).json({...user.dataValues, tasks});
+        res.status(200).json({...user, tasks});
     } catch ({message}) {
         res.status(400).json({error:message});
     };
@@ -25,7 +26,7 @@ const getAUser = async (req,res) => {
 
 const getAllUsers = async (req,res) => {
     try {
-        const users = await User.findAll();
+        const users = await getAllUsersController();
         res.status(200).json({results:users});
     } catch ({message}) {
         res.status(400).json({error:message});
@@ -42,10 +43,10 @@ const createUser = async (req,res) => {
         if(!validateName(name)) throw new Error(`El atributo name no cuenta con los parámetros válidos`);
 
         //? Create User
-        const user = await User.create({name});
+        const user = await createUserController({name});
 
         //* Response with user created
-        res.status(200).json({...user.dataValues});
+        res.status(200).json({...user});
     } catch ({message}) {
         res.status(400).json({error: message});
     };
@@ -55,11 +56,7 @@ const deleteUser = async (req,res) => {
         const {name} = req.params;
         
         //! Delete user - Not returns something
-        await User.destroy({
-            where:{
-                name
-            }
-        });
+        await deleteUserController({name});
 
         res.status(200).json({
             request:`El user: [${name}], se ha eliminado correctamente`
@@ -72,26 +69,25 @@ const deleteUser = async (req,res) => {
 const updateUser = async (req,res) => {
     try {
         //! Extract value from request
-        const {name:nameParam} = req.params;
+        const {name:idName} = req.params;
         const {name} = req.body;
         
         //* Validate data of name
         if(!validateName(name)) throw new Error(`El atributo name no cuenta con los parámetros válidos`);
         
         //? Update user in database
-        const user = await User.update({name},{
-            where:{
-                name: nameParam
-            }
-        });
+        const user = await updateUserController({idName, name});
 
         res.status(200).json({
-            request:`El elemento ${nameParam} se ha actualizado a ${name}`,
-            id_user: user
+            request:`El elemento ${idName} se ha actualizado a ${name}`,
+            user: {
+                previous: idName,
+                current: name
+            }
         });
     } catch ({message}) {
         res.status(400).json({error: message});
-    }
+    };
 };
 
 //? Functions

@@ -1,9 +1,14 @@
-const { Task } = require('../db.js');
+const getATasksController = require("../controllers/getATaskController.js");
+const getAllTasksController = require("../controllers/getAllTasksController.js");
+const createTaskController = require('../controllers/createTaskController.js');
+const deleteTaskController = require('../controllers/deleteTaskController.js');
+const updateTaskController = require('../controllers/updateTaskController.js');
 
 const getAllTasks = async (req, res) => {
     try {
-        const response = await Task.findAll();
-        res.status(200).json({results:response});
+        const results = await getAllTasksController();
+
+        res.status(200).json({results});
     } catch ({message}) {
         res.status(500).json({error:message});
     }
@@ -17,9 +22,8 @@ const getATask = async (req, res) => {
         if(isNaN(id)) throw new Error('No se ejecutó la acción; El valor no es un ID Válido');
 
         //? Delete a task
-        const task = await Task.findAll({
-            where:{id}
-        });
+        const task = await getATasksController(id);
+        console.log(task);
 
         //! Validate response from database
         if(!task.length) throw new Error('Tarea no encontrada');
@@ -42,12 +46,12 @@ const createTask = async (req, res) => {
 
         
         //* Create task in DataBase
-        const task = await Task.create({
+        const task = await createTaskController({
             title, description, UserId: Number(UserId),status
         });
         
         //? Response server
-        res.status(200).json({...task.dataValues});
+        res.status(200).json({...task});
     } catch ({message}) {
         console.log({message});
         res.status(400).json({error:message});
@@ -62,9 +66,7 @@ const deleteTask = async (req, res) => {
         if(isNaN(id)) throw new Error('No se ejecutó la acción; El valor no es un ID Válido');
 
         //? Delete a task
-        const del = await Task.destroy({
-            where:{id}
-        });
+        const del = await deleteTaskController(id);
         
         if(!del) throw new Error(`La tarea que intentas eliminar no existe`);
 
@@ -78,28 +80,29 @@ const deleteTask = async (req, res) => {
 const updateTask = async (req, res) => {
     try {
         const { id } = req.params;
-        const {title, description} = req.body;
+        const {title, description,status} = req.body;
 
         //! Validate data for new Task
-        const tLen = title.trim().length;
-        const validate = tLen >= 5 && tLen <= 100;
+        let tLen,validate = true;
+        if(title){
+            tLen = title.trim().length;
+            validate = tLen >= 5 && tLen <= 100
+        }
 
         if(!validate) throw new Error('Los campos no son válidos');
 
         //* Filter data to update
-        const dataFiltrered = Object.entries({title, description}).reduce((init,[key,val])=>(
+        const dataFiltrered = Object.entries({title, description, status}).reduce((init,[key,val])=>(
             val ? {...init, [key]: val} : init
         ),{});
 
         //? Update task
-        const user = await Task.update({...dataFiltrered},{
-            where:{id}
-        });
+        const user = await updateTaskController({data:{...dataFiltrered}, id});
 
-        if(!user[0]) throw new Error(`No puedes actualizar, la tarea [${id}] no existe`);
-
+        if(!user) throw new Error(`No puedes actualizar, la tarea [${id}] no existe`);
+        
         //! Response server with final status proccess
-        res.status(200).json({request:"Actualizada correctamente"});
+        res.status(200).json({request:"Actualizada correctamente", dataUpdated: dataFiltrered});
     } catch ({message}) {
         res.status(400).json({error:message});
     };
