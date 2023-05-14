@@ -1,8 +1,10 @@
 const SET_USERS = "SET_USERS";
 const SET_TASKS = "SET_TASKS";
 const ADD_TASK = "ADD_TASK";
+const UPDATE_TASK = "UPDATE_TASK";
 export {
     SET_USERS,
     SET_TASKS,
-    ADD_TASK
+    ADD_TASK,
+    UPDATE_TASK
 }

@@ -1,4 +1,4 @@
-import { ADD_TASK, SET_TASKS,SET_USERS } from "./actionTypes";
+import { ADD_TASK, SET_TASKS,SET_USERS, UPDATE_TASK } from "./actionTypes";
 //? If not exist a state, set initialState
 const initialState = {
     tasks:[],
@@ -9,22 +9,31 @@ const initialState = {
 const rootReducer = function(state = initialState, {type, payload}){
     const typeFunction = ({
         [`${SET_USERS}`]: () => {
-            const parseUsers = new Map(payload.map(task => {
-                return [task.id, task]
-            }))
             return {
                 ...state,
-                users: parseUsers
+                users: payload
             }
         },
         [`${SET_TASKS}`]:() => ({
             ...state,
-            tasks: payload.reverse()
+            tasks: payload
         }),
         [`${ADD_TASK}`]: () => ({
             ...state,
             tasks: [payload,...state.tasks]
-        })
+        }),
+        [`${UPDATE_TASK}`]: () => {
+            const newTasks = state.tasks.map(task => {
+                if(task.id === payload.idTask){
+                    return {...task, ...payload.data, updatedAt: new Date().toISOString()}
+                }
+                return task;
+            });
+            return {
+                ...state,
+                tasks:newTasks
+            };
+        }
     })[type];
     return typeFunction ? typeFunction() : state;
 };

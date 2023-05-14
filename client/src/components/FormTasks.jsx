@@ -6,6 +6,8 @@ import { formContext, updateContext, clearContext } from '../context/HomeProvide
 import { useDispatch } from 'react-redux';
 import { createTasks } from '../redux/createActions';
 
+import ErrorMessage from "../components/ErrorMessage";
+
 function FormTasks() {
     const dispatchRedux = useDispatch();
     //* From context form
@@ -30,15 +32,15 @@ function FormTasks() {
         e.preventDefault();
 
         //Select elements to apply validation
-        const elementsToValidate = new Map([
-            ['title',(val) => val && val.length >= 5 && val.length <= 100],
-            ['description',(val) => val && val.length >= 10 && val.length <= 1000],
-            ['User',(val) => Boolean(val.name)]
-        ]);
+        const elementsToValidate = {
+            title: (val) => val && val.length >= 5 && val.length <= 100,
+            description:(val) => val && val.length >= 10 && val.length <= 1000,
+            User:(val) => Boolean(val.name)
+        }
 
         //Generate validation
         const validate = Object.entries(valuesForm).filter(([key,value]) => {
-            const validation = elementsToValidate.get(key);
+            const validation = elementsToValidate[key];
             if(validation){
                 const finalValue = typeof value === 'string' ? value.trim() : value;
                 return !validation(finalValue);
@@ -51,12 +53,18 @@ function FormTasks() {
 
         //!Validate Form with errors
         if(!errors.length){
-
             //* Parse Object to create Tasks
-            const UserId = valuesForm.User.id
-            const parseData = {...valuesForm};
+            const UserId = valuesForm.User.id;
+            const parseData = Object.fromEntries(Object.entries(valuesForm).map(([key,val]) => {
+                let valueFinal = val;
+                if(typeof valueFinal === 'string'){
+                    valueFinal = valueFinal.trim();
+                };
+                return [key,valueFinal]
+            }));
+
             delete parseData.User;
-            
+
             //! Send create task in form
             dispatchRedux(createTasks({
                 ...parseData,
@@ -71,14 +79,16 @@ function FormTasks() {
     };
 
     //* Parse errors
-    const getErrors = (errors) => errors.map(([key]) => {
-        const parseError = ({
+    const getErrors = (errors) => {
+        const parseError = {
             User: `No hay un usuario para Asignar la Tarea`,
             title: `El asunto debe tener entre 5 y 100 caracteres`,
             description: `La descripción debe tener entre 10 y 1000 caracteres`
-        })[key];
-        return  parseError ?? `El campo ${key} no es válido`;
-    });
+        };
+        return errors.map(([key]) => {
+            return  parseError[key] ?? `El campo ${key} no es válido`;
+        });
+    };
 
     return (
         <form action="" onSubmit={handleSubmit} className="bg-main rounded-3xl flex flex-col gap-3 w-full md:col-span-6 p-4 pb-16 shadow-all">
@@ -150,15 +160,6 @@ function InputLabelContainer({children, Icon}) {
             <label> {Icon && <Icon className='text-2xl'/>}</label>
             {children}
         </div>
-    );
-}
-
-
-const ErrorMessage = ({message}) => {
-    return (
-        <p className='p-1 text-red-600 font-raleway font-bold text-sm drop-shadow-md'>
-            {message}
-        </p>
     );
 }
 
