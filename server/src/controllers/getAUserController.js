@@ -1,12 +1,19 @@
-const { User } = require('../db');
+const { User, Task } = require('../db');
 
 const getAUserController = async name => {
-    const response = await User.findAll({
+    const response = await User.findOne({
         where:{
             name
+        },
+        include:{
+            model: Task,
         }
     });
-    return response[0];
+    
+    //! Validate SELECT database
+    if(!response) throw new Error('El usuario en solicitud no existe');
+
+    return response.dataValues;
 };
 
 module.exports = getAUserController;

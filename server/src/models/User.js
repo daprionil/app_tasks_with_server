@@ -13,5 +13,5 @@ module.exports = function(database){
             allowNull: false,
             len:[4,20]
         }
-    })
-}
+    }, {timestamps: false});
+};

@@ -12,13 +12,8 @@ const getAUser = async (req,res) => {
         //! GET user from database
         const user = await getAUserController(name);
 
-        //! Validate SELECT database
-        if(!user) throw new Error('El usuario en solicitud no existe');
-        
-        const tasks = await getTasksByUser(user.id);
-
         //* Response with find user
-        res.status(200).json({...user, tasks});
+        res.status(200).json(user);
     } catch ({message}) {
         res.status(400).json({error:message});
     };

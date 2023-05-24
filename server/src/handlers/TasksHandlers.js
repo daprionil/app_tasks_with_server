@@ -7,7 +7,7 @@ const updateTaskController = require('../controllers/updateTaskController.js');
 const getAllTasks = async (req, res) => {
     try {
         const results = await getAllTasksController();
-
+        
         res.status(200).json({results});
     } catch ({message}) {
         res.status(500).json({error:message});
@@ -25,10 +25,7 @@ const getATask = async (req, res) => {
         const task = await getATasksController(id);
         console.log(task);
 
-        //! Validate response from database
-        if(!task.length) throw new Error('Tarea no encontrada');
-
-        res.status(200).json(task[0]);
+        res.status(200).json(task);
     } catch ({message}) {
         res.status(400).json({error:message});
     };
