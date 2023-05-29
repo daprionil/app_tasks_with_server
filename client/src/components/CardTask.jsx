@@ -5,7 +5,7 @@ import FormCardTask from './FormCardTask';
 import { useDispatch } from "react-redux";
 import { updateTask } from "../redux/createActions";
 
-function CardTask({title, description, status, UserId, UserName, id,createdAt, updatedAt}) {
+function CardTask({title, description, status, UserName, id,createdAt, updatedAt}) {
     const [editMode, setEditMode] = useState(false);
     const dispatchRedux = useDispatch();
 
@@ -23,8 +23,8 @@ function CardTask({title, description, status, UserId, UserName, id,createdAt, u
     };
     
     return (
-        <div className={`${stylesStatus[status]} rounded shadow-all grid grid-cols-1 xs:grid-cols-5 overflow-hidden`}>
-            <p className={`w-full bg-slate-100 bg-opacity-70 font-semibold col-span-full text-center font-raleway`}>#{id} <span className="font-light">{status}</span></p>
+        <div className={`${stylesStatus[status]} rounded shadow-all grid grid-cols-1 xs:grid-cols-5 md:grid-cols-1 overflow-hidden items-start`}>
+            <p className={`w-full bg-slate-100 bg-opacity-70 font-semibold col-span-full h-fit text-center font-raleway`}>#{id} <span className="font-light">{status}</span></p>
             {
                 !editMode ?
                     <div className={`col-span-auto xs:col-span-4 bg-opacity-40 p-4 font-poppins`}>

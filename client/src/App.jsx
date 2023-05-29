@@ -3,6 +3,8 @@ import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Home from "./pages/Home";
 import TasksPage from "./pages/TasksPage";
+import UsersPage from "./pages/UsersPage";
+import DetailsUserPage from "./pages/DetailsUser";
 
 function App() {
     return (
@@ -17,8 +19,8 @@ function App() {
                     <Route path="/tasks/:idTask" element={<p>Tarea 1</p>}/>
 
                     {/* //!Users */}
-                    <Route path="/users" element={<p>users</p>} />
-                    <Route path="/users/:idUser" element={<p>Usuario 1</p>}/>
+                    <Route path="/users" element={<UsersPage />} />
+                    <Route path="/users/:idUser" element={<DetailsUserPage />}/>
                 </Routes>
             </div>
         </div>
