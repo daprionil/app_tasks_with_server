@@ -7,6 +7,7 @@ const createUserController = async (user) => {
         },
         mode:"cors"
     });
+    console.log(response);
     return response
 }
 export default createUserController;

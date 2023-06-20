@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import TasksPage from "./pages/TasksPage";
 import UsersPage from "./pages/UsersPage";
 import DetailsUserPage from "./pages/DetailsUser";
+import DetailsTaskPage from "./pages/DetailsTaskPage";
 
 function App() {
     return (
@@ -16,7 +17,7 @@ function App() {
                     
                     {/* //!Tasks */}
                     <Route path="/tasks" element={<TasksPage/>} />
-                    <Route path="/tasks/:idTask" element={<p>Tarea 1</p>}/>
+                    <Route path="/tasks/:idTask" element={<DetailsTaskPage />}/>
 
                     {/* //!Users */}
                     <Route path="/users" element={<UsersPage />} />

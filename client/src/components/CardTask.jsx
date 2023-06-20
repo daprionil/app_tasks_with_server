@@ -1,9 +1,10 @@
-import dayjs from "dayjs";
 import { useState } from "react";
 
 import FormCardTask from './FormCardTask';
 import { useDispatch } from "react-redux";
+import { NavLink } from "react-router-dom";
 import { updateTask } from "../redux/createActions";
+import { getDate } from "../utils/getDate";
 
 function CardTask({title, description, status, UserName, id,createdAt, updatedAt}) {
     const [editMode, setEditMode] = useState(false);
@@ -29,7 +30,7 @@ function CardTask({title, description, status, UserName, id,createdAt, updatedAt
                 !editMode ?
                     <div className={`col-span-auto xs:col-span-4 bg-opacity-40 p-4 font-poppins`}>
                         <div className="xs:flex text-stone-700 flex-nowrap border-b-4 border-slate-100  text-xl items-center gap-4 justify-between">
-                            <p className="underline  justify-self-center py-1">{title}</p>
+                            <NavLink className="hover:underline  justify-self-center py-1" to={`/tasks/${id}`}>{title}</NavLink>
                             <h2 className="drop-shadow-all"><span className="font-raleway font-bold">asignada a: </span>{UserName}</h2>
                         </div>
                         <p className="bg-white rounded-b bg-opacity-30 p-2 justify-self-center font-raleway py-1">{description}</p>
@@ -46,10 +47,10 @@ function CardTask({title, description, status, UserName, id,createdAt, updatedAt
                 </select>
             </div>
             <div className="col-span-full px-4 py-2 flex flex-nowrap gap-2 items-center">
-                <p className="text-xs"><span className="font-semibold font-raleway">Creada: </span>{dayjs(new Date(createdAt)).fromNow()}</p>
+                <p className="text-xs"><span className="font-semibold font-raleway">Creada: </span>{getDate(createdAt)}</p>
                 {
                     createdAt !== updatedAt && 
-                    <p className="text-xs"><span className="font-semibold font-raleway">Actualizada: </span>{dayjs(new Date(updatedAt)).fromNow()}</p>
+                    <p className="text-xs"><span className="font-semibold font-raleway">Actualizada: </span>{getDate(updatedAt)}</p>
                 }
             </div>
         </div>

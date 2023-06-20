@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import ErrorMessage from "./ErrorMessage";
 import { useDispatch } from "react-redux";
 import { updateTask } from "../redux/createActions";
@@ -6,13 +6,13 @@ import { updateTask } from "../redux/createActions";
 function FormCardTask({title,description, handleEdit, idTask}) {
     const dispatchRedux = useDispatch();
 
-    const [edit, setEdit] = useState(false);
+    const edit = useRef(false);
     const [errors, setErrors] = useState([]);
     const [valuesUpdateForm, changeUpdateForm] = useState({title,description});
 
     const handleChange = ({target:{name,value}}) => {
         changeUpdateForm(state => ({...state, [name]:value}));
-        setEdit(true);
+        edit.current = true;
     };
     const handleSubmit = evt => {
         evt.preventDefault();
@@ -30,13 +30,13 @@ function FormCardTask({title,description, handleEdit, idTask}) {
 
         //! Set errores
         if(!validate.length){
-            if(edit){
+            if(edit.current){
                 dispatchRedux(updateTask({data:valuesUpdateForm,idTask}));
             };
 
             //! Close Edit Form and Set Form
             handleEdit();
-            setEdit(false);
+            edit.current = false;
         };
     };
 

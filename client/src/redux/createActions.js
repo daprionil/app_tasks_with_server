@@ -1,5 +1,5 @@
 import getUsersController from "../controllers/getUsersController";
-import createUserController from "../controllers/createUserController";
+import createTasksController from "../controllers/createTasksController";
 import getTasksController from '../controllers/getTasksController';
 
 import { SET_USERS, SET_TASKS, ADD_TASK, UPDATE_TASK } from "./actionTypes";
@@ -30,7 +30,7 @@ const getTasks = () => {
 const createTasks = (user) => {
     return async function(dispatch){
         try {
-            const response = await createUserController(user);
+            const response = await createTasksController(user);
             const data = await response.json();
             dispatch({type: ADD_TASK, payload: data});
         } catch ({message}) {

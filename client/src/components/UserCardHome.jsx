@@ -1,16 +1,19 @@
 import { BsPersonSquare } from 'react-icons/bs';
 import { RiAddLine } from 'react-icons/ri';
+import { NavLink } from 'react-router-dom';
 
-function UserCardHome({name, id, setUserAssignTask}) {
+function UserCardHome({name, id, Tasks, setUserAssignTask}) {
     return (
         <div className='p-2 my-2'>
             <div className='grid grid-cols-6 items-center'>
                 <div className='flex col-span-4 items-center gap-2'>
                     <BsPersonSquare className='text-xl drop-shadow-lg'/>
-                    <p className='font-semibold drop-shadow-lg capitalize font-poppins'>{name}</p>
+                    <NavLink to={`/users/${name}`}>
+                        <p className='font-semibold hover:underline drop-shadow-lg capitalize font-poppins'>{name}</p>
+                    </NavLink>
                 </div>
                 <div className='col-span-2'>
-                    <p className='font-poppins drop-shadow-xl font-semibold'>#{id}</p>
+                    <p className='font-poppins drop-shadow-xl font-semibold'>T{Tasks.length} - #{id}</p>
                 </div>
             </div>
             <button

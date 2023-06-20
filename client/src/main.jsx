@@ -1,14 +1,9 @@
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
-import 'dayjs/locale/es';
-dayjs.extend(relativeTime);
-dayjs.locale('es');
-
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
+import { HeadProvider } from 'react-head';
 
 import '../public/index.css';
 import store from './redux/store.js';
@@ -22,10 +17,12 @@ store.dispatch(getTasks());
 
 root.render(
     <React.StrictMode>
-        <Provider store={store}>
-            <BrowserRouter>
-                <App />
-            </BrowserRouter>
-        </Provider>
+        <HeadProvider>
+            <Provider store={store}>
+                <BrowserRouter>
+                    <App />
+                </BrowserRouter>
+            </Provider>
+        </HeadProvider>
     </React.StrictMode>,
 );
